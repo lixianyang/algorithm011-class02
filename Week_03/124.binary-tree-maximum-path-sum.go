@@ -15,13 +15,12 @@ func maxPathSum(root *TreeNode) int {
 }
 func doMaxPathSum(root *TreeNode, max *int) int {
     if root == nil { return 0 }
-    left, right := doMaxPathSum(root.Left, max), doMaxPathSum(root.Right, max)
-    result := maxValue(left+root.Val, right+root.Val, root.Val)
-    *max = maxValue(*max, result, left+right+root.Val)
-    return result
+    left := maxValue(0, doMaxPathSum(root.Left, max))
+    right := maxValue(0, doMaxPathSum(root.Right, max))
+    *max = maxValue(*max, left+right+root.Val)
+    return root.Val + maxValue(left, right)
 }
-func maxValue(a, b, c int) int {
-    if b > a { a = b }
-    if c > a { a = c }
+func maxValue(a, b int) int {
+    if b > a { return b }
     return a
 }
